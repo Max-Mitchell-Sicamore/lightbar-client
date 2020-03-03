@@ -48,6 +48,7 @@ class LightBarSegement:
         self.mode = mode
 
     def set_color(self,color):
+        self._check_color(color)
         self.color = color
 
     def _check_mode(self,mode):
@@ -57,4 +58,11 @@ class LightBarSegement:
     def _vaild_mode(self,mode):
         return mode in self.VAILD_MODES
 
-# LightBarCleint(3).set_segment(1,(1,2,1),"foo")
+    def _check_color(self,color):
+        if not self._viald_color(color):
+            raise TypeError("{} is an invaild color!".format(color))
+
+    def _viald_color(self,color):
+        return bool(re.match(r"\([0-9]+, [0-9]+, [0-9]+\)",str(color)))
+
+
