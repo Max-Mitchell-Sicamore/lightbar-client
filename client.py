@@ -11,15 +11,29 @@ class LightBarCleint:
         return "{}:{}".format(segment,str(self.segments[segment]))
 
     def set_segment(self,segment,color,mode):
-        self._check_segment(segment)
+        self._check_segment_index(segment)
         self.segments[segment].set_color(color)
         self.segments[segment].set_mode(mode)
-        
+    
     def _check_segment(self,segment):
-        if not self._vaild_segment(segment):
-            raise "Segment is outside of lighbar range!"
+        try:
+            self._check_segment_index(segment)
+            self.segments[segment].check()
+        except KeyError:
+            print("you must set the mode first for segment {}".format(segment))
+        except TypeError:
+            print("you must set the color first for segment {}".format(segment))
+        except IndexError as e:
+            print(e)
 
-    def _vaild_segment(self,segment):
+
+
+        
+    def _check_segment_index(self,segment):
+        if not self._vaild_segment_index(segment):
+            raise IndexError("Segment is outside of lighbar range!")
+
+    def _vaild_segment_index(self,segment):
         return segment < len(self.segments)
 
 class LightBarSegement:
@@ -50,6 +64,10 @@ class LightBarSegement:
     def set_color(self,color):
         self._check_color(color)
         self.color = color
+
+    def check(self):
+        self._check_mode(self.mode)
+        self._check_color(self.color)
 
     def _check_mode(self,mode):
         if not self._vaild_mode(mode):
