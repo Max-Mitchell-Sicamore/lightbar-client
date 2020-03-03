@@ -6,6 +6,9 @@ class LightBarCleint:
             map(lambda x:LightBarSegement() ,([None]*size))
         )
 
+    def get_display_segment_string(self,segment):
+        self._check_segment(segment)
+        return "{}:{}".format(segment,str(self.segments[segment]))
 
     def set_segment(self,segment,color,mode):
         self._check_segment(segment)
@@ -21,6 +24,13 @@ class LightBarCleint:
 
 class LightBarSegement:
 
+    VAILD_MODES = [
+        "solid",
+        "slide",
+        "blink_fast",
+        "blink_slow"
+    ]
+
     def __init__(self,color=(None),mode=None):
         self.color = color
         self.mode = mode
@@ -34,14 +44,17 @@ class LightBarSegement:
             ,self.mode)
 
     def set_mode(self,mode):
+        self._check_mode(mode)
         self.mode = mode
 
     def set_color(self,color):
         self.color = color
 
-# tests 
-# l = LightBarCleint(4)
-# l.set_segment(0,(255,20,10),"blink")
-# print(
-#     l.segments
-)
+    def _check_mode(self,mode):
+        if not self._vaild_mode(mode):
+            raise KeyError("{} is an invaild mode!".format(mode))
+
+    def _vaild_mode(self,mode):
+        return mode in self.VAILD_MODES
+
+# LightBarCleint(3).set_segment(1,(1,2,1),"foo")
