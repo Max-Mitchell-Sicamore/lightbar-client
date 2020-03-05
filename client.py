@@ -1,10 +1,14 @@
 import re
-class LightBarCleint:
+class LightBarClient:
 
     def __init__(self,size):
         self.segments = list(
             map(lambda x:LightBarSegement() ,([None]*size))
         )
+
+    def set_and_display_segment(self,segment,color,mode):
+        self.set_segment(segment,color,mode)
+        self.get_display_segment_string(segment)
 
     def get_display_segment_string(self,segment):
         self._check_segment(segment)
@@ -25,9 +29,6 @@ class LightBarCleint:
             print("you must set the color first for segment {}".format(segment))
         except IndexError as e:
             print(e)
-
-
-
         
     def _check_segment_index(self,segment):
         if not self._vaild_segment_index(segment):
