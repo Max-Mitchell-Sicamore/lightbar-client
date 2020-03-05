@@ -1,14 +1,18 @@
 import re
 class LightBarClient:
 
-    def __init__(self,size):
+    def __init__(self,size,path="/tmp/pipe_sicamore_lightbar"):
         self.segments = list(
             map(lambda x:LightBarSegement() ,([None]*size))
         )
+        self.path = path
 
     def set_and_display_segment(self,segment,color,mode):
         self.set_segment(segment,color,mode)
-        return self.get_display_segment_string(segment)
+        self.display_segment(segment)
+
+    def display_segment(self,segment):
+        open(self.path).write(self.get_display_segment_string(segment))
 
     def get_display_segment_string(self,segment):
         self._check_segment(segment)
