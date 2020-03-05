@@ -8,7 +8,7 @@ class LightBarClient:
 
     def set_and_display_segment(self,segment,color,mode):
         self.set_segment(segment,color,mode)
-        self.get_display_segment_string(segment)
+        return self.get_display_segment_string(segment)
 
     def get_display_segment_string(self,segment):
         self._check_segment(segment)
@@ -55,7 +55,7 @@ class LightBarSegement:
 
     def __str__(self):
         return "{}:{}".format(
-            re.findall('[^()]+',str(self.color))[0]
+            "".join(re.findall("[^()\s]+",str(self.color)))
             ,self.mode)
 
     def set_mode(self,mode):
